@@ -1,0 +1,13 @@
+current directory: /Users/kunjal/Desktop/MobX_Demo/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+/Users/kunjal/.rvm/rubies/ruby-2.7.4/bin/ruby -I /Users/kunjal/.rvm/rubies/ruby-2.7.4/lib/ruby/2.7.0 -r ./siteconf20230404-18393-15moago.rb extconf.rb
+creating Makefile
+
+current directory: /Users/kunjal/Desktop/MobX_Demo/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" clean
+
+current directory: /Users/kunjal/Desktop/MobX_Demo/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR="
+make: Nothing to be done for `all'.
+
+current directory: /Users/kunjal/Desktop/MobX_Demo/vendor/bundle/ruby/2.7.0/gems/json-2.6.1/ext/json
+make "DESTDIR=" install
