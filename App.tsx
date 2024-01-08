@@ -8,7 +8,7 @@
 
 import React from 'react';
 import {SafeAreaView} from 'react-native';
-import Home from './src/oldstore/Home';
+import Home from './src/components/Home';
 
 const App = () => {
   return (
