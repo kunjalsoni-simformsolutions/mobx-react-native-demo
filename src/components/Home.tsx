@@ -53,9 +53,9 @@ const Home = observer(() => {
           }}
           onPress={() => {
             Keyboard.dismiss();
+            store.movieStore.addMovie({ name: movieName, year: movieYear });
             setMovieName('')
             setMovieYear('')
-            store.movieStore.addMovie({ name: movieName, year: movieYear });
           }}
         >
           <Text style={{ margin: 10, fontSize: 18, color: "white" }}>Save</Text>
