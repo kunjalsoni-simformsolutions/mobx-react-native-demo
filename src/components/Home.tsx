@@ -53,6 +53,8 @@ const Home = observer(() => {
           }}
           onPress={() => {
             Keyboard.dismiss();
+            setMovieName('')
+            setMovieYear('')
             store.movieStore.addMovie({ name: movieName, year: movieYear });
           }}
         >
