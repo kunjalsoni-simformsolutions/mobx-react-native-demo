@@ -2,21 +2,26 @@ import React, { useState } from "react";
 import {
   FlatList,
   Keyboard,
+  Modal,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import { store } from "../store/MovieStore";
+import { Movie, store } from "../store/MovieStore";
 import { observer } from "mobx-react";
+import EditMovie from "./EditMovie";
 
 const Home = observer(() => {
   const [movieName, setMovieName] = useState("");
   const [movieYear, setMovieYear] = useState("");
-  // const [moviesData, setMoviesData] = useState<Movie[]>([]);
+  const [movieToEdit, setMovieToEdit] = useState<Movie | null>(null);
 
   return (
     <View>
+      <Modal transparent visible={movieToEdit != null}>
+        <EditMovie movieToEdit={movieToEdit} setMovieToEdit={setMovieToEdit} />
+      </Modal>
       <View style={{ backgroundColor: "white" }}>
         <TextInput
           style={{
@@ -53,9 +58,17 @@ const Home = observer(() => {
           }}
           onPress={() => {
             Keyboard.dismiss();
-            store.movieStore.addMovie({ name: movieName, year: movieYear });
-            setMovieName('')
-            setMovieYear('')
+            store.movieStore.addMovie({
+              id:
+                store.movieStore.movies.length > 0
+                  ? store.movieStore.movies[store.movieStore.movies.length - 1]
+                      .id + 1
+                  : 1,
+              name: movieName,
+              year: movieYear,
+            });
+            setMovieName("");
+            setMovieYear("");
           }}
         >
           <Text style={{ margin: 10, fontSize: 18, color: "white" }}>Save</Text>
@@ -70,13 +83,45 @@ const Home = observer(() => {
                 <View
                   style={{
                     marginVertical: 10,
-                    alignContent: "center",
+                    paddingHorizontal: 40,
                     alignItems: "center",
+                    flexDirection: "row",
+                    justifyContent: "center",
                   }}
                 >
                   <Text>
-                    {item.name}, {item.year}
+                    {item.name}, {item.year}, {item.id}
                   </Text>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                    }}
+                  >
+                    <TouchableOpacity
+                      onPress={() => {
+                        setMovieToEdit(item);
+                      }}
+                    >
+                      <View
+                        style={{
+                          marginHorizontal: 10,
+                          padding: 5,
+                          backgroundColor: "grey",
+                        }}
+                      >
+                        <Text style={{ color: "white" }}>Edit</Text>
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      onPress={() => {
+                        store.movieStore.deleteMovie(item.id);
+                      }}
+                    >
+                      <View style={{ padding: 5, backgroundColor: "grey" }}>
+                        <Text style={{ color: "white" }}>Delete</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             );

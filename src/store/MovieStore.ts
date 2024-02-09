@@ -1,8 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { action, autorun, computed, makeObservable, observable } from "mobx";
+import { action, makeObservable, observable } from "mobx";
 import { makePersistable } from "mobx-persist-store";
 
 export class Movie {
+  id: number;
   name?: string;
   newName?: string;
   year: string;
@@ -20,6 +21,8 @@ export class MovieStore {
       movies: observable,
       addMovie: action,
       upgradeStoreVersion: action,
+      deleteMovie: action,
+      editMovie: action,
     });
 
     makePersistable(this, {
@@ -40,7 +43,17 @@ export class MovieStore {
   }
 
   addMovie(newMovie: Movie) {
-    this.movies = [...this.movies, newMovie];
+    this.movies.push(newMovie);
+  }
+
+  deleteMovie(id: number) {
+    this.movies = this.movies.filter((movie) => movie.id !== id);
+  }
+
+  editMovie(movie: Movie) {
+    this.movies = this.movies.map((mov) => {
+      return mov.id === movie.id ? movie : mov;
+    });
   }
 }
 
