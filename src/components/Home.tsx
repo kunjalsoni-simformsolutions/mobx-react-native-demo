@@ -8,20 +8,25 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { Movie, store } from "../store/MovieStore";
-import { observer } from "mobx-react";
-import EditMovie from "./EditMovie";
+// import EditMovie from "./EditMovie";
 
-const Home = observer(() => {
+export interface Movie {
+  id: number;
+  name: string;
+  year: string;
+}
+
+const Home = () => {
   const [movieName, setMovieName] = useState("");
   const [movieYear, setMovieYear] = useState("");
-  const [movieToEdit, setMovieToEdit] = useState<Movie | null>(null);
+  // const [movieToEdit, setMovieToEdit] = useState<Movie | null>(null);
+  const [movies, setMovies] = useState<Movie[]>([]);
 
   return (
     <View>
-      <Modal transparent visible={movieToEdit != null}>
+      {/* <Modal transparent visible={movieToEdit != null}>
         <EditMovie movieToEdit={movieToEdit} setMovieToEdit={setMovieToEdit} />
-      </Modal>
+      </Modal> */}
       <View style={{ backgroundColor: "white" }}>
         <TextInput
           style={{
@@ -58,17 +63,16 @@ const Home = observer(() => {
           }}
           onPress={() => {
             Keyboard.dismiss();
-            store.movieStore.addMovie({
-              id:
-                store.movieStore.movies.length > 0
-                  ? store.movieStore.movies[store.movieStore.movies.length - 1]
-                      .id + 1
-                  : 1,
-              name: movieName,
-              year: movieYear,
-            });
-            setMovieName("");
-            setMovieYear("");
+            const lastMovieId =
+              movies.length > 0 ? movies[movies.length - 1].id : 0;
+            setMovies([
+              ...movies,
+              {
+                id: lastMovieId + 1,
+                name: movieName,
+                year: movieYear,
+              },
+            ]);
           }}
         >
           <Text style={{ margin: 10, fontSize: 18, color: "white" }}>Save</Text>
@@ -76,8 +80,8 @@ const Home = observer(() => {
       </View>
       <View>
         <FlatList
-          data={store.movieStore.movies}
-          renderItem={({ item }: any) => {
+          data={movies}
+          renderItem={({ item }) => {
             return (
               <View>
                 <View
@@ -90,9 +94,9 @@ const Home = observer(() => {
                   }}
                 >
                   <Text>
-                    {item.name}, {item.year}, {item.id}
+                    {item.name}, {item.year}
                   </Text>
-                  <View
+                  {/* <View
                     style={{
                       flexDirection: "row",
                     }}
@@ -121,7 +125,7 @@ const Home = observer(() => {
                         <Text style={{ color: "white" }}>Delete</Text>
                       </View>
                     </TouchableOpacity>
-                  </View>
+                  </View> */}
                 </View>
               </View>
             );
@@ -130,6 +134,6 @@ const Home = observer(() => {
       </View>
     </View>
   );
-});
+};
 
 export default Home;
